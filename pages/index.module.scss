@@ -7,6 +7,27 @@
   justify-content: space-between;
   align-items: center;
   background: white;
+  font-weight: 500;
+
+  & > a {
+    text-decoration: none;
+    color: white;
+    background-color: #7f56d9;
+    padding: 1rem 1.5rem;
+    border-radius: 0.7rem;
+  }
+
+  & .navList {
+    display: flex;
+    flex-direction: row;
+    column-gap: 2rem;
+    list-style: none;
+
+    a {
+      color: #242424;
+      text-decoration: none;
+    }
+  }
 }
 
 .contactButton {
