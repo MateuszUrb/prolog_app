@@ -51,7 +51,7 @@
   height: 100vh;
 }
 
-.modal[data-isOpen="true"] {
+.modal[data-open="true"] {
   border-color: transparent;
   border-radius: 10px;
   max-width: 20rem;

@@ -64,7 +64,7 @@ const IssuesPage = () => {
       <button
         className={styles.contactButton}
         onClick={handleOpenModal}
-        isOpen={modalState.isOpen}
+        // isOpen={modalState.isOpen}
       >
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src="/icons/message.svg" alt="Contact" />
@@ -105,7 +105,7 @@ function ContactModal({ isOpen, hasCloseButton, onClose, children }) {
 
   return (
     <dialog
-      data-isOpen={isOpen}
+      data-open={isOpen}
       ref={modalRef}
       onKeyDown={handleKeyDown}
       className={styles.modal}
