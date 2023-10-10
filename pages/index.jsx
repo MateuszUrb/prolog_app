@@ -2,8 +2,20 @@ import { Routes } from "@config/routes";
 import Link from "next/link";
 import Image from "next/image";
 import styles from "./index.module.scss";
+import { useEffect, useRef, useState } from "react";
 
 const IssuesPage = () => {
+  const [modalState, setModalState] = useState({
+    isOpen: false,
+    hasCloseButton: true,
+  });
+
+  function handleOpenModal() {
+    setModalState({ ...modalState, isOpen: true });
+  }
+  function handleCloseModal() {
+    setModalState({ ...modalState, isOpen: false });
+  }
   return (
     <div>
       {" "}
@@ -33,13 +45,26 @@ const IssuesPage = () => {
         </nav>
         <Link href={Routes.projects}>Open Dashboard</Link>
       </header>
+      <main className={styles.main}>
+        <ContactModal
+          isOpen={modalState.isOpen}
+          hasCloseButton={modalState.hasCloseButton}
+          onClose={handleCloseModal}
+        >
+          <div className={styles.modalContext}>
+            <Image width={50} height={50} src="/icons/letter.svg" alt="" />
+            <h2>Contact Us Via Email</h2>
+            <p>
+              Any questions? Send us an email at prolog@profy.dev. We usually
+              answer within 24 hours.
+            </p>
+          </div>
+        </ContactModal>
+      </main>
       <button
         className={styles.contactButton}
-        onClick={() =>
-          alert(
-            "Implement this in Challenge 2 - Modal:\n\nhttps://profy.dev/rjs-challenge-modal",
-          )
-        }
+        onClick={handleOpenModal}
+        // isOpen={modalState.isOpen}
       >
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src="/icons/message.svg" alt="Contact" />
@@ -48,4 +73,62 @@ const IssuesPage = () => {
   );
 };
 
+function ContactModal({ isOpen, hasCloseButton, onClose, children }) {
+  const [isModalOpen, setIsModalOpen] = useState(isOpen);
+  const modalRef = useRef(null);
+
+  function handleClose() {
+    onClose ? onClose() : setIsModalOpen(false);
+  }
+
+  function handleKeyDown(e) {
+    if (e.key === "Escape") {
+      handleClose();
+    }
+  }
+
+  useEffect(() => {
+    setIsModalOpen(isOpen);
+  }, [isOpen]);
+
+  useEffect(() => {
+    const modalEl = modalRef.current;
+
+    if (modalEl) {
+      if (isModalOpen) {
+        modalEl.showModal();
+      } else {
+        modalEl.close();
+      }
+    }
+  }, [isModalOpen]);
+
+  return (
+    <dialog
+      data-open={isOpen}
+      ref={modalRef}
+      onKeyDown={handleKeyDown}
+      className={styles.modal}
+    >
+      {children}
+      <div className={styles.modalCta}>
+        {hasCloseButton && (
+          <button
+            className={`${styles.button} ${styles["buttonPrimary"]}`}
+            onClick={handleClose}
+          >
+            Close
+          </button>
+        )}
+        <a
+          type="button"
+          href="mailto:prolog@proofy.dev"
+          className={`${styles.button} ${styles["buttonEmail"]}`}
+        >
+          Open Email App
+        </a>
+      </div>
+    </dialog>
+  );
+}
 export default IssuesPage;
